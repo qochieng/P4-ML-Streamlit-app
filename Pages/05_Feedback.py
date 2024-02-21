@@ -8,4 +8,4 @@ st.set_page_config(
     layout = 'centered'
 )
 
-st.title("Leave Feedback")
+st.title("Write Feedback")
