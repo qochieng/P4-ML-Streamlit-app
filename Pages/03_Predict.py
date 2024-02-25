@@ -1,7 +1,29 @@
 import streamlit as st
 import pandas as pd 
 import numpy as np
+import joblib
+import sklearn
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, RobustScaler
+from sklearn.preprocessing import OneHotEncoder,LabelEncoder, OrdinalEncoder
+from sklearn.base import BaseEstimator, TransformerMixin
 
+class LogTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, base=10):
+        self.base = base
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        return np.log(X) / np.log(self.base)
+
+# Instantiate LogTransformer with base=10
+log_transformer = LogTransformer(base=10)
 
 st.set_page_config(
     page_title = 'Show Predictions',
@@ -10,37 +32,139 @@ st.set_page_config(
 
 st.title("View Predictions")
 
+st.cache_resource(show_spinner='Predicting...')
+def load_Gradient_Model():
+     pipeline = joblib.load("./Models/Gradient_boosting_model.joblib")
+     return pipeline
+
+st.cache_resource(show_spinner='Predicting...')
+def load_Linear_Model():
+    pipeline = joblib.load("./Model/Linear_model.joblib")
+    return pipeline
+
+# Function for Model selection
+def model_selected():
+    st.selectbox('Select Model to use:',['Gradient','Linear'],key='SelectedModel' )
+
+
+
+
+    if st.session_state['SelectedModel' ]== 'Gradient':
+        pipeline = load_Gradient_Model()
+
+    else:
+        pipeline = load_Linear_Model()
+
+    encoder = joblib.load('./Models/encoder.joblib')
+
+    return pipeline,encoder
+
+# # Function for prediction
+    
+def make_predict(pipeline, encoder):
+
+    SeniorCitizen = st.session_state['SeniorCitizen']
+    gender = st.session_state['gender']
+    Partner= st.session_state['Partner']
+    Dependants = st.session_state['Dependants']
+    PhoneService = st.session_state['phoneService']
+    MultipleLines = st.session_state['MultipleLines']
+    InternetService = st.session_state['InternetService']
+    OnlineSecurity = st.session_state['OnlineSecurity']
+    OnlineBackup = st.session_state['Onlinebackup']
+    DeviceProtection = st.session_state['DeviceProtection']
+    TechSupport = st.session_state['TechSupport']
+    StreamingTV = st.session_state['StreamingTV']
+    StreamingMovies = st.session_state['StreamingMovies']
+    tenure = st.session_state['tenure']
+    Contract = st.session_state['contract']
+    PaperlessBilling = st.session_state['PaperlessBilling']
+    PaymentMethod = st.session_state['PaymentMethod']
+    MonthlyCharges = st.session_state['MonthlyCharges']
+    TotalCharges = st.session_state['TotalCharges']
+
+    columns = ['SeniorCitizen','gender','Partner','Dependants','PhoneService','MultipleLines','InternetService','OnlineSecurity',
+               'OnlineBackup','DeviceProtection','TechSupport','StreamingTV','StreamingMovies','tenure','Contract','PaperlessBilling'
+               ,'PaymentMethod','MonthlyCharges','TotalCharges']
+    
+    data = [[SeniorCitizen,gender,Partner,Dependants,PhoneService, MultipleLines,InternetService,OnlineSecurity,
+               OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,tenure,Contract,PaperlessBilling
+               ,PaymentMethod,MonthlyCharges,TotalCharges]]
+    
+    df = pd.DataFrame(data, columns=columns)
+
+    prediction = pipeline.predict(df)
+    st.session_state['prediction'] = prediction
+
+    return prediction
+
+
+
 def display_form():
    
     with st.form('Data input'):
-         
-        st.subheader("Please Enter Customer Details to Get Churn Prediction")
 
-        CustomerId = st.text_input('Input Customers ID:', key='CustomerId')
-        SeniorCitizen = st.number_input('Is customer a Senior Citizen? No=0, Yes=1',0,1)
-        gender = st.selectbox('Select customers gender',['Male','Female'])
-        tenure = st.number_input('What is customer tenure in months',0,80)
-        Partner = st.selectbox('Does customer have Partner',['True','False'])
-        Dependants = st.selectbox('Does customer have Dependants',['True','False'])
-        PhoneService = st.selectbox('Does customer have PhoneService',['True','False'])
-        MultipleLines = st.selectbox('Does customer have MultipleLines',['True','False','None'])
-        InternetService = st.selectbox('Which InternetService does customer have',['DSL', 'Fiber optic', 'None'])
-        OnlineSecurity = st.selectbox('Does customer have OnlineSecurity',['Yes','No'])
-        OnlineBackup = st.selectbox('Does customer have OnlineBackup',['Yes','No'])
-        DeviceProtection = st.selectbox('Does customer have DeviceProtection',['Yes','No'])
-        TechSupport =  st.selectbox('Does customer have TechSupport',['Yes','No'])
-        StreamingTV =  st.selectbox('Does customer have StreamingTV',['Yes','No'])        
-        StreamingMovies = st.selectbox('Does customer have StreamingMovies',['Yes','No'])   
-        Contract =  st.selectbox('What is Customers Contract Period',['Month-to-month', 'One year', 'Two year'])    
-        PaperlessBilling = st.selectbox('Does customer use PaperlessBilling',['Yes','No'])   
-        PaymentMethod = st.selectbox('Select Customers payment Method', ["Electronic check","Mailed check", "Bank transfer (automatic)",
-        "Credit card (automatic)"]) 
-        MonthlyCharges = st.number_input('What is customer Average MonthlyCharges',key='MonthlyCharges')  
-        TotalCharges = st.number_input('What is customer Average TotalCharges',key='TotalCharges')      
-                                    
+        pipeline,encoder = model_selected()
+      
 
-st.radio("Select the Model Prediction to use",['Gradient','Random'])
-if st.button("Predict Customer Churn"):
-   st.switch_page("Pages/03_Predict.py") 
+        col1, col2, col3 = st.columns(3)
 
-st.form_submit_button('Submit')
+        with col1:
+            
+            #CustomerId = st.text_input('Input Customers ID:', key='CustomerId')
+            st.write("#### Personal Details")
+            SeniorCitizen = st.selectbox('Senior Citizen? No=0, Yes=1',[0,1], key='SeniorCitizen')
+            gender = st.selectbox('Select customers gender',['Male','Female'], key='gender')
+            Partner = st.selectbox('have Partner',['True','False'], key='Partner')
+            Dependants = st.selectbox('have Dependants',['True','False'],key='Dependants')
+            PhoneService = st.selectbox('have PhoneService',['True','False'],key='phoneService')
+            MultipleLines = st.selectbox('have MultipleLines',['True','False','None'],key='MultipleLines')
+
+        with col2:
+            st.write("#### Customer Services")
+            InternetService = st.selectbox('Which InternetService',['DSL', 'Fiber optic', 'None'],key='InternetService')
+            OnlineSecurity = st.selectbox('have OnlineSecurity',['Yes','No'], key='OnlineSecurity')
+            OnlineBackup = st.selectbox('have OnlineBackup',['Yes','No'],key='Onlinebackup')
+            DeviceProtection = st.selectbox('have DeviceProtection',['Yes','No'],key='DeviceProtection')
+            TechSupport =  st.selectbox('have TechSupport',['Yes','No'],key='TechSupport')
+            StreamingTV =  st.selectbox('have StreamingTV',['Yes','No'],key='StreamingTV')
+            StreamingMovies = st.selectbox('have StreamingMovies',['Yes','No'], key='StreamingMovies')         
+             
+        with col3:
+            st.write("#### Payment Details")
+            tenure = st.number_input('customer tenure(months)',0,80, key='tenure')
+            Contract =  st.selectbox('Contract Period',['Month-to-month', 'One year', 'Two year'],key='contract')    
+            PaperlessBilling = st.selectbox('use PaperlessBilling',['Yes','No'],key='PaperlessBilling')   
+            PaymentMethod = st.selectbox('payment Method', ["Electronic check","Mailed check", "Bank transfer (automatic)",
+            "Credit card (automatic)"],key='PaymentMethod') 
+            MonthlyCharges = st.number_input('Average MonthlyCharges',15.0, 120.0,key='MonthlyCharges')  
+            TotalCharges = st.number_input('Average TotalCharges',15.0,9000.0,step=10.0,key='TotalCharges')      
+                                        
+
+        #st.selectbox("Select the Model Prediction to use",['Gradient','Linear'],key='SelectedModel')
+
+
+        st.form_submit_button('Predict', on_click=make_predict, kwargs=dict(pipeline=pipeline, encoder=encoder))
+
+if __name__ == "__main__":
+     #model_selected()
+     #st.selectbox('Select Model to use:'['Gradient','Linear'])
+     st.subheader("Enter Customer Details to Get Churn Prediction")
+     #model_selected()
+   
+
+     display_form()
+
+     final_prediction = st.session_state['prediction']
+     st.markdown('##{final_prediction}')
+  
+
+
+     st.write(st.session_state)
+
+
+
+#[gender ,SeniorCitizen,Partner ,Dependents,tenure,PhoneService ,MultipleLines ,
+#InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,
+#Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges]
+
