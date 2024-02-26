@@ -8,29 +8,20 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, RobustScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler,FunctionTransformer
 from sklearn.preprocessing import OneHotEncoder,LabelEncoder, OrdinalEncoder
 from sklearn.base import BaseEstimator, TransformerMixin
+#from sktime.transformations.series.boxcox import LogTransformer
 
-class LogTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, base=10):
-        self.base = base
+from feature_engine.transformation import LogTransformer
 
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        return np.log(X) / np.log(self.base)
-
-# Instantiate LogTransformer with base=10
-log_transformer = LogTransformer(base=10)
 
 st.set_page_config(
     page_title = 'Show Predictions',
     layout = 'centered'
 )
 
-st.title("View Predictions")
+st.title = ("Enter Customer Details")
 
 st.cache_resource(show_spinner='Predicting...')
 def load_Gradient_Model():
@@ -42,24 +33,22 @@ def load_Linear_Model():
     pipeline = joblib.load("./Model/Linear_model.joblib")
     return pipeline
 
-# Function for Model selection
+# # Function for Model selection
 def model_selected():
-    st.selectbox('Select Model to use:',['Gradient','Linear'],key='SelectedModel' )
+     st.selectbox('Select Model to use:',['Gradient','Linear'], key='SelectedModel')
 
 
+    #  if st.session_state['SelectedModel' ]== 'Gradient':
+    #     pipeline = load_Gradient_Model()
 
+    #  else:
+    #     pipeline = load_Linear_Model()
 
-    if st.session_state['SelectedModel' ]== 'Gradient':
-        pipeline = load_Gradient_Model()
+#     encoder = joblib.load('./Models/encoder.joblib')
 
-    else:
-        pipeline = load_Linear_Model()
+#     return pipeline,encoder
 
-    encoder = joblib.load('./Models/encoder.joblib')
-
-    return pipeline,encoder
-
-# # Function for prediction
+# # # Function for prediction
     
 def make_predict(pipeline, encoder):
 
@@ -104,7 +93,7 @@ def display_form():
    
     with st.form('Data input'):
 
-        pipeline,encoder = model_selected()
+        #pipeline,encoder = model_selected()
       
 
         col1, col2, col3 = st.columns(3)
@@ -119,10 +108,10 @@ def display_form():
             Dependants = st.selectbox('have Dependants',['True','False'],key='Dependants')
             PhoneService = st.selectbox('have PhoneService',['True','False'],key='phoneService')
             MultipleLines = st.selectbox('have MultipleLines',['True','False','None'],key='MultipleLines')
+            InternetService = st.selectbox('Which InternetService',['DSL', 'Fiber optic', 'None'],key='InternetService')
 
         with col2:
             st.write("#### Customer Services")
-            InternetService = st.selectbox('Which InternetService',['DSL', 'Fiber optic', 'None'],key='InternetService')
             OnlineSecurity = st.selectbox('have OnlineSecurity',['Yes','No'], key='OnlineSecurity')
             OnlineBackup = st.selectbox('have OnlineBackup',['Yes','No'],key='Onlinebackup')
             DeviceProtection = st.selectbox('have DeviceProtection',['Yes','No'],key='DeviceProtection')
@@ -137,26 +126,26 @@ def display_form():
             PaperlessBilling = st.selectbox('use PaperlessBilling',['Yes','No'],key='PaperlessBilling')   
             PaymentMethod = st.selectbox('payment Method', ["Electronic check","Mailed check", "Bank transfer (automatic)",
             "Credit card (automatic)"],key='PaymentMethod') 
-            MonthlyCharges = st.number_input('Average MonthlyCharges',15.0, 120.0,key='MonthlyCharges')  
+            MonthlyCharges = st.number_input('Average MonthlyCharges',15.0, 120.0,step=1.0,key='MonthlyCharges')  
             TotalCharges = st.number_input('Average TotalCharges',15.0,9000.0,step=10.0,key='TotalCharges')      
                                         
 
         #st.selectbox("Select the Model Prediction to use",['Gradient','Linear'],key='SelectedModel')
 
 
-        st.form_submit_button('Predict', on_click=make_predict, kwargs=dict(pipeline=pipeline, encoder=encoder))
+        st.form_submit_button('Predict')
+                              #, on_click=make_predict, kwargs=dict(pipeline=pipeline, encoder=encoder))
 
 if __name__ == "__main__":
      #model_selected()
      #st.selectbox('Select Model to use:'['Gradient','Linear'])
-     st.subheader("Enter Customer Details to Get Churn Prediction")
-     #model_selected()
+     #st.title("Enter Customer Details")
+     model_selected()
    
-
      display_form()
 
-     final_prediction = st.session_state['prediction']
-     st.markdown('##{final_prediction}')
+    #  final_prediction = st.session_state['prediction']
+    #  st.markdown('##{final_prediction}')
   
 
 

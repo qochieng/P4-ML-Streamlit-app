@@ -8,4 +8,17 @@ st.set_page_config(
     layout = 'centered'
 )
 
-st.title("Write Feedback")
+
+def Feedback_form():
+
+   with st.form('Feedback Form'):
+   
+
+
+    st.title("Write Feedback")
+
+    st.text_area(f'#### Leave Feedback')
+
+    st.form_submit_button('Submit Feedback')
+
+Feedback_form()

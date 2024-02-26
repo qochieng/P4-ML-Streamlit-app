@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd 
 import numpy as np
-import plotly.express as px
 import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
@@ -10,35 +9,46 @@ import os
 
 import pickle
 
-# target = data['Churn']
-# features = data[[['SeniorCitizen', 'tenure', 'MonthlyCharges', 'TotalCharges']'gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines',
-#        'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
-#        'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract',
-#        'PaperlessBilling', 'PaymentMethod']]
 
+#st.image('sunrise.jpg')
 st.set_page_config(
     page_title = 'TELCO CHURN RATE',
-    page_icon = ":home:",
+    page_icon = "🏠",
     layout = "centered",
 
     )
 
 st.title('Please Login to Access Platform')
 
-# file_path = path(__file__).parent / "hashed_pw.pkl"
-# with file_path.open("rb") as file:
-#     hashed_passwords = pickle.load(file)
 
-# authenticator =stauth.Authenticate(names, usernames, hashed_passwords,"00_Home.py", "cdefg", cookie_expiry_days=30)
 
-# name, authentication_status, username = authenticator.login("Login", "00_Home.py")
 
-# if authentication_status == False:
-#     st.error("Username/Password is Incorrect")
-# if authentication_status == None:
-#     st.warning("Enter Username and Password")
-# if authentication_status== True:
-#     st.page_link("Pages/00_Home.py", label="Login")
+with open('../config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+authenticator.login()
+
+
+try:
+    email_of_registered_user, username_of_registered_user, name_of_registered_user = authenticator.register_user(preauthorization=False)
+    if email_of_registered_user:
+        st.success('User registered successfully')
+except Exception as e:
+    st.error(e)
+
+
+
+
+
+
 
 
 

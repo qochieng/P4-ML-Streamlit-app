@@ -12,15 +12,8 @@ st.set_page_config(
     layout = 'centered'
 )
 
-st.title("Dashboard")
+st.selectbox('Select preferred Dashboard',['EDA dashboard','KPI Dashboard'])
 
-st.button("Overview")
-
-st.button("Analytics")
-
-st.button("Reports")
-
-st.text('Pick a Date')
 datetime_string = datetime_range_picker(unit='minutes', key='range_picker') 
                                         #picker_button={'is_show': True })
 if datetime_string is not None:
@@ -31,7 +24,7 @@ df = pd.read_csv("./Telco_data.csv")
 
 plt.figure(figsize=(12, 4))
 data = df.groupby('Churn')['SeniorCitizen'].count()
-data.plot(kind='bar',xlabel='SeniorCitizen', ylabel='Churn Count', color ="#86bf91")
+data.plot(xlabel='SeniorCitizen', ylabel='Churn Count', color ="#86bf91")
 
 # Render the plot using st.pyplot()
 st.bar_chart(data)
