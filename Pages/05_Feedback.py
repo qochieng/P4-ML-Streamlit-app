@@ -15,7 +15,7 @@ def Feedback_form():
    
 
 
-    st.title("Write Feedback")
+    st.markdown(f"## Write Feedback")
 
     st.text_area(f'#### Leave Feedback')
 

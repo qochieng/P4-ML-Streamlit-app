@@ -9,18 +9,18 @@ st.set_page_config(
     layout = 'centered'
 )
 
-st.title("Welcome to Churn Prediction App")
+st.header("Welcome to Churn Prediction App")
 
-st.header("Below are the steps to be followed:")
+st.subheader("Below are the steps to be followed:")
 
-st.subheader("STEP 1: \n##### Upload data/Fill in the form")
+st.markdown("STEP 1: \n##### Fill in the form")
 
 
-st.subheader(f"STEP 2: \n##### Select the type of Model")
+st.markdown(f"STEP 2: \n##### Select the type of Model")
 
-st.subheader(f"STEP 3: \n##### Get Prediction")
+st.markdown(f"STEP 3: \n##### Get Prediction")
 
-st.subheader("STEP 4: \n##### Generate Report")
+st.markdown("STEP 4: \n##### Generate Report")
 
 
 

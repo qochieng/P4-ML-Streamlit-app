@@ -6,10 +6,13 @@ from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 #from pathlib import path 
 import os
+from PIL import Image
 
 import pickle
 
 
+
+#st.markdown("",unsafe_allow_html=True)
 #st.image('sunrise.jpg')
 st.set_page_config(
     page_title = 'TELCO CHURN RATE',
@@ -17,13 +20,33 @@ st.set_page_config(
     layout = "centered",
 
     )
+st.sidebar.title("Menu")
+bg_image_path = "E:\\AZUBI\\DATA ANALYTICS\\Analytics\\PROJECTS\\Project 4\\P4-ML-Streamlit-app\\pics\\unsplash.jpg"
 
-st.title('Please Login to Access Platform')
+def set_bg_hack_url():
+    '''
+    A function to unpack an image from url and set as bg.
+    Returns
+    -------
+    The background.
+    '''
+        
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background: url("{bg_image_path}");
+             background-size: cover
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+    
+set_bg_hack_url()
 
 
-
-
-with open('../config.yaml') as file:
+with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
@@ -36,6 +59,32 @@ authenticator = stauth.Authenticate(
 
 authenticator.login()
 
+if st.session_state["authentication_status"]:
+    authenticator.logout()
+    st.write(f'Welcome *{st.session_state["name"]}*')
+    st.page_link("Pages/00_Home.py", label="Go To Home Page",icon="🏠")
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
+
+# Password Reset
+if st.session_state["authentication_status"]:
+    try:
+        if authenticator.reset_password(st.session_state["username"]):
+            st.success('Password modified successfully')
+    except Exception as e:
+        st.error(e)
+
+# Updating Details
+if st.session_state["authentication_status"]:
+    try:
+        if authenticator.update_user_details(st.session_state["username"]):
+            st.success('Entries updated successfully')
+    except Exception as e:
+        st.error(e)
+
+# New User Registration
 
 try:
     email_of_registered_user, username_of_registered_user, name_of_registered_user = authenticator.register_user(preauthorization=False)
@@ -44,6 +93,31 @@ try:
 except Exception as e:
     st.error(e)
 
+# Forgot Password Reset
+try:
+    username_of_forgotten_password, email_of_forgotten_password, new_random_password = authenticator.forgot_password()
+    if username_of_forgotten_password:
+        st.success('New password to be sent securely')
+        # The developer should securely transfer the new password to the user.
+    elif username_of_forgotten_password == False:
+        st.error('Username not found')
+except Exception as e:
+    st.error(e)  
+# Forgot User Reset
+try:
+    username_of_forgotten_username, email_of_forgotten_username = authenticator.forgot_username()
+    if username_of_forgotten_username:
+        st.success('Username to be sent securely')
+        # The developer should securely transfer the username to the user.
+    elif username_of_forgotten_username == False:
+        st.error('Email not found')
+except Exception as e:
+    st.error(e)  
+
+
+
+with open('./config.yaml', 'w') as file:
+    yaml.dump(config, file, default_flow_style=False)
 
 
 
@@ -52,49 +126,48 @@ except Exception as e:
 
 
 
+# st.title("User Login")
 
-st.title("User Login")
+# username = st.text_input("Username",key="username")
+# password = st.text_input("Password", key="password")
 
-username = st.text_input("Username",key="username")
-password = st.text_input("Password", key="password")
+# # Button to submit the login form
+# if st.button("Login"):
+#     # Dummy authentication (replace with actual authentication logic)
+#    if username == "admin" and password == "password":
+#       st.page_link("Pages/00_Home.py")
+#    else:
+#       st.error("Invalid username or password")
 
-# Button to submit the login form
-if st.button("Login"):
-    # Dummy authentication (replace with actual authentication logic)
-   if username == "admin" and password == "password":
-      st.page_link("Pages/00_Home.py")
-   else:
-      st.error("Invalid username or password")
-
-#st.link_button("Login","Pages/00_Home.py") 
-
+# #st.link_button("Login","Pages/00_Home.py") 
 
 
-st.title("User Registration Form")
 
-# Input fields for username, email, password, and bio
-username = st.text_input("Username")
-email = st.text_input("Email")
-password = st.text_input("Password", type="password")
+# st.title("User Registration Form")
+
+# # Input fields for username, email, password, and bio
+# username = st.text_input("Username")
+# email = st.text_input("Email")
+# password = st.text_input("Password", type="password")
 
 
-# Checkbox for agreeing to terms and conditions
-agree_terms = st.checkbox("I agree to the terms and conditions")
+# # Checkbox for agreeing to terms and conditions
+# agree_terms = st.checkbox("I agree to the terms and conditions")
 
-# Button to submit the registration form
-if st.button("Register"):
-    # Validation checks
-    if not username:
-        st.error("Please enter a username")
-    elif not email:
-        st.error("Please enter an email")
-    elif not password:
-        st.error("Please enter a password")
-    elif not agree_terms:
-        st.error("Please agree to the terms and conditions")
-    else:
-        # Registration logic (e.g., save to database)
-        st.form_submit_button("Register")
+# # Button to submit the registration form
+# if st.button("Register"):
+#     # Validation checks
+#     if not username:
+#         st.error("Please enter a username")
+#     elif not email:
+#         st.error("Please enter an email")
+#     elif not password:
+#         st.error("Please enter a password")
+#     elif not agree_terms:
+#         st.error("Please agree to the terms and conditions")
+#     else:
+#         # Registration logic (e.g., save to database)
+#         st.form_submit_button("Register")
 
 
 
