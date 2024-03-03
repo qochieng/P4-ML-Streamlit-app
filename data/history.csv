@@ -1,0 +1,4 @@
+
+SeniorCitizen,gender,Partner,Dependents,PhoneService,MultipleLines,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,tenure,Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges,Date,Model
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,2024-03-03,Gradient
+0,Female,True,True,True,True,Fiber optic,Yes,No,Yes,Yes,Yes,Yes,0,Two year,Yes,Bank transfer (automatic),38.0,355.0,2024-03-03,Random

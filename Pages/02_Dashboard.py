@@ -20,7 +20,9 @@ if datetime_string is not None:
     start_datetime = datetime_string[0]
     end_datetime = datetime_string[1]
 
-df = pd.read_csv("./Telco_data.csv")
+path = "./Pages/01_Data.py"
+
+df =pd.read_csv
 
 plt.figure(figsize=(12, 4))
 data = df.groupby('Churn')['SeniorCitizen'].count()

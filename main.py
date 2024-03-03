@@ -14,13 +14,14 @@ import pickle
 
 #st.markdown("",unsafe_allow_html=True)
 #st.image('sunrise.jpg')
+
 st.set_page_config(
     page_title = 'TELCO CHURN RATE',
     page_icon = "🏠",
     layout = "centered",
 
     )
-st.sidebar.title("Menu")
+
 bg_image_path = "E:\\AZUBI\\DATA ANALYTICS\\Analytics\\PROJECTS\\Project 4\\P4-ML-Streamlit-app\\pics\\unsplash.jpg"
 
 def set_bg_hack_url():
@@ -62,7 +63,8 @@ authenticator.login()
 if st.session_state["authentication_status"]:
     authenticator.logout()
     st.write(f'Welcome *{st.session_state["name"]}*')
-    st.page_link("Pages/00_Home.py", label="Go To Home Page",icon="🏠")
+    if st.button('Go To Home'):
+            st.switch_page("Pages/00_Home.py")
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:

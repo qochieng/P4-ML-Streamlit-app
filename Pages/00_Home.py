@@ -24,5 +24,8 @@ st.markdown("STEP 4: \n##### Generate Report")
 
 
 
-st.link_button("Next", "Pages/01_Data.py")
+if st.button("Next"):
+    st.switch_page("Pages/01_Data.py")
+
+
 

@@ -22,9 +22,8 @@ st.title = ('Data from Vodafone')
 
 
 #Cache connection used to connect database
-@st.cache_data()
-    
-    
+@st.cache_resource(show_spinner='Connecting...')
+       
     #Loading environment variables from secret.toml file into a dictionary
 def load_data():
     environment_variables = st.secrets['Database']
@@ -40,16 +39,16 @@ def load_data():
     connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};MARS_Connection=yes;MinProtocolVersion=TLSv1.2;'
 
     #establishing a connestion to the database using pyodbc library
-    connection = pyodbc.connect(connection_string)
+    conn = pyodbc.connect(connection_string)
 
     #retrieving data from database
     query = 'Select * From dbo.LP2_Telco_churn_first_3000'
-    df = pd.read_sql(query,connection)
+    df = pd.read_sql(query,conn)
 
 
 
 
-    connection.close()
+    conn.close()
     return df
 
 
@@ -61,7 +60,7 @@ column_selected = st.selectbox('Column Type:', ['Numeric', 'Categorical', 'All c
 if column_selected == 'Numeric':
     st.dataframe(df.select_dtypes(include=['number']))
 elif column_selected == 'Categorical':
-    st.dataframe(df.select_dtypes(include=['object']))
+    st.dataframe(df.select_dtypes(include=['object','bool']))
 
 data = st.dataframe(df)
 
