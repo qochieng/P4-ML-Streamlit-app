@@ -46,8 +46,6 @@ def load_data():
     df = pd.read_sql(query,conn)
 
 
-
-
     conn.close()
     return df
 
@@ -61,10 +59,32 @@ if column_selected == 'Numeric':
     st.dataframe(df.select_dtypes(include=['number']))
 elif column_selected == 'Categorical':
     st.dataframe(df.select_dtypes(include=['object','bool']))
+else:
+    st.dataframe(df)
 
-data = st.dataframe(df)
+if st.button("Dashboard"):
+    st.switch_page("Pages/02_Dashboard.py")
 
+st.markdown('##### Column Description:')
 
+st.markdown(f" Gender: Whether the customer is a male or a female")
+st.markdown(f" SeniorCitizen -- Whether a customer is a senior citizen or not")
+st.markdown(f" Partner -- Whether the customer has a partner or not")
+st.markdown(f" Dependents -- Whether the customer has dependents or not")
+st.markdown(f" Tenure -- Number of months the customer has stayed with the company")
+st.markdown(f" Phone Service -- Whether the customer has a phone service or not")
+st.markdown(f" MultipleLines -- Whether the customer has multiple lines or not")
+st.markdown(f" InternetService -- Customer's internet service provider (DSL, Fiber Optic, No)")
+st.markdown(f" OnlineSecurity -- Whether the customer has online security or not (Yes, No, No Internet)")
+st.markdown(f" OnlineBackup -- Whether the customer has online backup or not (Yes, No, No Internet)")
+st.markdown(f" DeviceProtection -- Whether the customer has device protection or not (Yes, No, No internet service)")
+st.markdown(f" TechSupport -- Whether the customer has tech support or not (Yes, No, No internet)")
+st.markdown(f" StreamingTV -- Whether the customer has streaming TV or not (Yes, No, No internet service)")
+st.markdown(f" StreamingMovies -- Whether the customer has streaming movies or not (Yes, No, No Internet service)")
+st.markdown(f" Contract -- The contract term of the customer (Month-to-Month, One year, Two year)")
+st.markdown(f" PaperlessBilling -- Whether the customer has paperless billing or not (Yes, No)")
+st.markdown(f" Payment Method -- The customer's payment method ")
+st.markdown(f" MonthlyCharges -- The amount charged to the customer monthly")
 
 
 

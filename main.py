@@ -22,7 +22,7 @@ st.set_page_config(
 
     )
 
-bg_image_path = "E:\\AZUBI\\DATA ANALYTICS\\Analytics\\PROJECTS\\Project 4\\P4-ML-Streamlit-app\\pics\\unsplash.jpg"
+bg_image_path = "https://images.app.goo.gl/47yNcjPmLJATeDKS7"
 
 def set_bg_hack_url():
     '''
@@ -95,26 +95,26 @@ try:
 except Exception as e:
     st.error(e)
 
-# Forgot Password Reset
-try:
-    username_of_forgotten_password, email_of_forgotten_password, new_random_password = authenticator.forgot_password()
-    if username_of_forgotten_password:
-        st.success('New password to be sent securely')
-        # The developer should securely transfer the new password to the user.
-    elif username_of_forgotten_password == False:
-        st.error('Username not found')
-except Exception as e:
-    st.error(e)  
-# Forgot User Reset
-try:
-    username_of_forgotten_username, email_of_forgotten_username = authenticator.forgot_username()
-    if username_of_forgotten_username:
-        st.success('Username to be sent securely')
-        # The developer should securely transfer the username to the user.
-    elif username_of_forgotten_username == False:
-        st.error('Email not found')
-except Exception as e:
-    st.error(e)  
+# # Forgot Password Reset
+# try:
+#     username_of_forgotten_password, email_of_forgotten_password, new_random_password = authenticator.forgot_password()
+#     if username_of_forgotten_password:
+#         st.success('New password to be sent securely')
+#         # The developer should securely transfer the new password to the user.
+#     elif username_of_forgotten_password == False:
+#         st.error('Username not found')
+# except Exception as e:
+#     st.error(e)  
+# # Forgot User Reset
+# try:
+#     username_of_forgotten_username, email_of_forgotten_username = authenticator.forgot_username()
+#     if username_of_forgotten_username:
+#         st.success('Username to be sent securely')
+#         # The developer should securely transfer the username to the user.
+#     elif username_of_forgotten_username == False:
+#         st.error('Email not found')
+# except Exception as e:
+#     st.error(e)  
 
 
 

@@ -29,7 +29,7 @@ class LogTransformer():
 
 st.set_page_config(
     page_title = 'Show Predictions',
-    layout = 'centered'
+    layout = 'wide'
 )
 
 st.title = ("Enter Customer Details")
@@ -44,7 +44,7 @@ def load_Random_Model():
     pipeline = joblib.load("./Models/RandomForest.pkl")
     return pipeline
 
-# # Function for Model selection
+# Function for Model selection
 def model_selected():
     
     
@@ -60,7 +60,7 @@ def model_selected():
 
     return pipeline,encoder
 
-# # Function for prediction
+# Function for prediction
     
 def make_predict(pipeline,encoder):
 
@@ -93,12 +93,31 @@ def make_predict(pipeline,encoder):
             OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,tenure,Contract,PaperlessBilling
             ,PaymentMethod,MonthlyCharges,TotalCharges]]
     
-    # To create a dataframe
+# To create a dataframe
     df = pd.DataFrame(data, columns=columns)
 
-    df['Date'] = datetime.date.today()
-    df['Model'] = st.session_state['SelectedModel']
 
+    df['Model'] = st.session_state['SelectedModel']
+    prediction = st.session_state['prediction']
+    
+    if 'prediction' not in st.session_state:
+     st.session_state['prediction'] = None
+
+    if 'probability' not in st.session_state:
+     st.session_state['probability'] = None
+
+
+
+ # Now you can safely access st.session_state['prediction']
+    prediction = st.session_state['prediction']
+    df['Churn'] = ['Yes' if pred == 1 else 'No' for pred in prediction]
+
+    
+    df['Date'] = datetime.date.today()
+
+
+# Append data to the CSV file, including column names only if writing header
+  
     df.to_csv('./data/history.csv', mode='a', header=not os.path.exists('./data/history.csv'), index=False)
 
     prediction = pipeline.predict(df)
@@ -110,14 +129,11 @@ def make_predict(pipeline,encoder):
 
     # pred= encoder.inverse_transform([pred])
 
-    
-
-    # To get Probability
+ # To get Probability
 
     probability = pipeline.predict_proba(df)
 
-    # To see the state
-
+# To see the state
 
     st.session_state['prediction'] =prediction
     st.session_state['probability']=probability
@@ -174,15 +190,17 @@ def display_form():
 if __name__ == "__main__":
    
      st.header("Enter Customer Details To Make Prediction")
-     #model_selected()
+     
    
      display_form()
 
      final_prediction = st.session_state['prediction']
      probability= st.session_state['probability']
 
+
+# If not, create the directory and file
+
      if not os.path.exists('./data/history.csv'):
-    # If not, create the directory and file
         os.makedirs('./data', exist_ok=True)
    
          
@@ -190,13 +208,10 @@ if __name__ == "__main__":
      if final_prediction == 1:
          probability_of_yes = probability[0][1]*100
          st.markdown(f'#### This Customer will Churn with probability of {round(probability_of_yes,2)}%')
-         probability_of_yes = probability[0]
+         #probability_of_yes = probability[0]
      else:
          probability_of_no = probability[0][0]*100
          st.markdown(f'#### This Customer will not churn with probability of {round(probability_of_no,2)}%')
-
-
-
 
 
 

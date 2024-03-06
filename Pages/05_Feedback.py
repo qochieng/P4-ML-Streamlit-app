@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 
-def Feedback_form():
+def feedback_form():
 
    with st.form('Feedback Form'):
    
@@ -19,11 +19,18 @@ def Feedback_form():
 
     st.text_area(f'#### Leave Feedback')
 
+#     elements = st.container()
+# >>> elements.line_chart(...)
+
+#     st.write("Hello")
+#     elements.text_input()
+
     st.form_submit_button('Submit Feedback')
+    Contact = "https://github.com/qochieng/P4-ML-Streamlit-app"
 
-    
+    st.markdown(f"For more Information Contact us at {Contact}", unsafe_allow_html=True)
 
 
 
 
-Feedback_form()
+feedback_form()

@@ -10,7 +10,7 @@ import datetime
 
 st.set_page_config(
     page_title = 'Show History',
-    layout = 'centered'
+    layout = 'wide'
 )
 
 st.header("History View")
