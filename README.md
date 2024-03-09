@@ -79,6 +79,10 @@ To run the program, run the follwing code in your terminal
 * A Login webpage will open
 * To continue login using the provided credentials on the sidebar:[Username=guest] and [Password=guest123]
 * Proceed to the predict page to perform prediction
+![Alt text](<Screenshot 2024-03-09 192214.png>)
+
+Predict page overview
+![Alt text](<Screenshot 2024-03-09 193127.png>)
 
 ## Authors:
 

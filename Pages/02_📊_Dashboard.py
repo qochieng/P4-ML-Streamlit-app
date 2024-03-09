@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 
-path = "./Telco_data.csv"
+path = "./data/Telco_data.csv"
 df =pd.read_csv(path)
 
 # Function for EDA dashboard
@@ -83,11 +83,11 @@ def EDA():
 
 def KPI():
 
-    col1, col2, col3 ,col4,col5,col6,col7= st.columns(7)
+    col1,col2,col3,col4,col5,col6,col7 = st.columns(7)
 
     with col1:
-    
 
+     
         data = df[['gender', 'Churn']]
         churn_counts = data.groupby('gender')['Churn'].value_counts().unstack(fill_value=0)
         fig = px.pie(names=churn_counts.index, values=churn_counts['Yes'], color=churn_counts.index,color_discrete_map={'Female': 'pink', 'Male': 'skyblue'},
@@ -103,22 +103,22 @@ def KPI():
 
 
     with col7:
-
-        data = df[['Churn']]
-        churn_counts = data['Churn'].value_counts()
-        fig = px.pie(names=churn_counts.index, values=churn_counts.values,
+         
+         data = df[['Churn']]
+         churn_counts = data['Churn'].value_counts()
+         fig = px.pie(names=churn_counts.index, values=churn_counts.values,
                     title='Number of Customers Churned')
-        fig.update_traces(pull=[0, 0.1])  #desired explosion effect
-        fig.update_traces(textposition='inside', textinfo='percent+label') 
-        st.plotly_chart(fig)
+         fig.update_traces(pull=[0, 0.1])  #desired explosion effect
+         fig.update_traces(textposition='inside', textinfo='percent+label') 
+         st.plotly_chart(fig)
 
 
-        data = df[['gender', 'TotalCharges']]
-        churn_counts = data.groupby('gender')['TotalCharges'].sum().reset_index()
-        fig.update_layout(title='Tenure Distribution',width=400, height=500)
-        fig = px.bar(churn_counts, x='gender', y='TotalCharges',title="Average Sum Charges per gender" ,color='gender',labels={'TotalCharges': 'TotalCharges', 'gender': 'Gender'},color_discrete_map={'Female': 'pink', 'Male': 'grey'},)
+         data = df[['gender', 'TotalCharges']]
+         churn_counts = data.groupby('gender')['TotalCharges'].sum().reset_index()
+         fig.update_layout(title='Tenure Distribution',width=400, height=500)
+         fig = px.bar(churn_counts, x='gender', y='TotalCharges',title="Average Sum Charges per gender" ,color='gender',labels={'TotalCharges': 'TotalCharges', 'gender': 'Gender'},color_discrete_map={'Female': 'pink', 'Male': 'grey'},)
         
-        st.plotly_chart(fig)
+         st.plotly_chart(fig)
 
 
     with col2:
@@ -131,10 +131,6 @@ def KPI():
                 st.plotly_chart(fig)
 
     plot_payment_methods(df)
-
-
-    with col3:
-         pass
     
 
 # Function to instantiate the selected dashboard

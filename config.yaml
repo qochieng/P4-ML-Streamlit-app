@@ -6,7 +6,7 @@ credentials:
   usernames:
     guest:
       email: guest@gmail.com
-      logged_in: false
+      logged_in: true
       name: Guest
       password: $2b$12$PhpfXytbgbdw7/gNxAC6G.KPAsQmTB.qnUEsFs2YbIGMpRHa5eSQe
     jsmith:
