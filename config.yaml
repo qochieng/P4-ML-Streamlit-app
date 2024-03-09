@@ -4,6 +4,11 @@ cookie:
   name: some_cookie_name
 credentials:
   usernames:
+    guest:
+      email: guest@gmail.com
+      logged_in: false
+      name: Guest
+      password: $2b$12$PhpfXytbgbdw7/gNxAC6G.KPAsQmTB.qnUEsFs2YbIGMpRHa5eSQe
     jsmith:
       email: jsmith@gmail.com
       logged_in: true
@@ -11,7 +16,7 @@ credentials:
       password: $2b$12$DqEq0dNrR0puXuMOFpgPReLHXashAWOXjEibixx63zAAqq6feC9M6
     qochieng:
       email: qochieng@yahoo.com
-      logged_in: true
+      logged_in: false
       name: Quintor
       password: $2b$12$n/7rli4LqJFkuqN7amQoW.3y67uFtUVMx54N.WKYusucYUD2w8qta
     rbriggs:
@@ -19,6 +24,11 @@ credentials:
       logged_in: false
       name: Rebecca Briggs
       password: $2b$12$App2BdJsPK1AGHwAHvGv4uio5HE6oq76rtciEHvt3CK.4EbTxj0ZC
+    user:
+      email: user@gmail.com
+      logged_in: false
+      name: User
+      password: $2b$12$.RE9YIua2alpBkgHyn69qOZjGjxf5ECYY3/Ozzb3GcpaqXLfNVz3a
 preauthorized:
   emails:
   - melsby@gmail.com

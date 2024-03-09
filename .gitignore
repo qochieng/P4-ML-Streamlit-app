@@ -1,6 +1,8 @@
 venv/
 .streamlit
 /outline 1.txt
+/config.yaml
+
 
 
 

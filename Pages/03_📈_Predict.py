@@ -16,6 +16,14 @@ from sklearn.base import BaseEstimator, TransformerMixin
 #from sktime.transformations.series.boxcox import LogTransformer
 from feature_engine.transformation import LogTransformer
 import datetime
+# Initialize authentication_status if it's not already initialized
+if 'authentication_status' not in st.session_state:
+    st.session_state.authentication_status = False
+
+# Check authentication status
+if not st.session_state.authentication_status:
+    st.info('Please Login to use Platform.')
+    st.stop()
 
 class LogTransformer():
     def __init__(self, constant=1e-5):
@@ -46,19 +54,31 @@ def load_Random_Model():
 
 # Function for Model selection
 def model_selected():
-    
-    
-    st.selectbox('Select Model to use:',['Gradient','Random'], key='SelectedModel')
+        col1,col2,col3 = st.columns(3)
 
-    if st.session_state['SelectedModel']== 'Gradient':      
-      pipeline = load_Gradient_Model()
+        with col1:
+            
+            st.selectbox('Select Model to use:',['Gradient','Random'], key='SelectedModel')
 
-    else:
-      pipeline = load_Random_Model()
+        if st.session_state['SelectedModel']== 'Gradient':      
+            pipeline = load_Gradient_Model()
 
-    encoder = joblib.load('./Models/encoder2.pkl')
+        else:
+            pipeline = load_Random_Model()
 
-    return pipeline,encoder
+        encoder = joblib.load('./Models/encoder2.pkl')
+
+        return pipeline,encoder
+
+
+if 'prediction' not in st.session_state:
+    st.session_state['prediction'] = None
+
+if 'probability' not in st.session_state:
+    st.session_state['probability'] = None
+
+if 'authentication_status' not in st.session_state:
+    st.session_state['authentication_status'] = None
 
 # Function for prediction
     
@@ -97,37 +117,20 @@ def make_predict(pipeline,encoder):
     df = pd.DataFrame(data, columns=columns)
 
 
+    
+   
     df['Model'] = st.session_state['SelectedModel']
     prediction = st.session_state['prediction']
-    
-    if 'prediction' not in st.session_state:
-     st.session_state['prediction'] = None
-
-    if 'probability' not in st.session_state:
-     st.session_state['probability'] = None
-
-
-
- # Now you can safely access st.session_state['prediction']
-    prediction = st.session_state['prediction']
     df['Churn'] = ['Yes' if pred == 1 else 'No' for pred in prediction]
-
-    
     df['Date'] = datetime.date.today()
 
+   
 
 # Append data to the CSV file, including column names only if writing header
   
     df.to_csv('./data/history.csv', mode='a', header=not os.path.exists('./data/history.csv'), index=False)
 
     prediction = pipeline.predict(df)
-
-    # pred_1= int(prediction[0])
-    # pred2 = np.array([[pred_1]])
-
-    # pred =pred2.reshape(1,-1)
-
-    # pred= encoder.inverse_transform([pred])
 
  # To get Probability
 
@@ -182,16 +185,13 @@ def display_form():
             TotalCharges = st.number_input('Average TotalCharges',15.0,9000.0,step=10.0,key='TotalCharges')      
                                         
 
-
-
-
         st.form_submit_button('Predict',on_click=make_predict, kwargs=dict(pipeline=pipeline, encoder=encoder))
 
+
 if __name__ == "__main__":
-   
-     st.header("Enter Customer Details To Make Prediction")
+     st.markdown("<h1 style='text-align:left;'>Enter Customer Details To Make Prediction</h1>", unsafe_allow_html=True)
      
-   
+     
      display_form()
 
      final_prediction = st.session_state['prediction']
@@ -203,27 +203,19 @@ if __name__ == "__main__":
      if not os.path.exists('./data/history.csv'):
         os.makedirs('./data', exist_ok=True)
    
-         
-
-     if final_prediction == 1:
+     if not final_prediction:
+         st.markdown('### Probability will show here')
+     elif final_prediction == 1:
          probability_of_yes = probability[0][1]*100
          st.markdown(f'#### This Customer will Churn with probability of {round(probability_of_yes,2)}%')
-         #probability_of_yes = probability[0]
      else:
          probability_of_no = probability[0][0]*100
          st.markdown(f'#### This Customer will not churn with probability of {round(probability_of_no,2)}%')
-
-
-
-     #st.write(f'This Customer Churn Prediction is:{final_prediction}')
-  
 
 
      st.write(st.session_state)
 
 
 
-#[gender ,SeniorCitizen,Partner ,Dependents,tenure,PhoneService ,MultipleLines ,
-#InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,
-#Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges]
+
 

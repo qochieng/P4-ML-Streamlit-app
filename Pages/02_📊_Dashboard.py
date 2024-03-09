@@ -7,6 +7,9 @@ import seaborn as sns
 from streamlit_date_picker import date_range_picker, PickerType, Unit, date_picker
 from streamlit_datetime_range_picker import datetime_range_picker
 st.set_option('deprecation.showPyplotGlobalUse', False)
+if not st.session_state.authentication_status:
+    st.info('Please Login to use Platform.')
+    st.stop()
 
 st.set_page_config(
     page_title = 'Dashboard',
@@ -36,7 +39,7 @@ def EDA():
 
 
             data= df['tenure']
-            fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['skyblue'])
+            fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['rebeccapurple'])
             fig.update_layout(title='Tenure Distribution',width=500, height=500)
             st.plotly_chart(fig)
 
@@ -46,7 +49,7 @@ def EDA():
 
 
             data = df[['tenure', 'TotalCharges', 'MonthlyCharges','Churn']]
-            fig = px.box(data, color='Churn', notched=True)
+            fig = px.box(data, color='Churn', notched=True,)
             fig.update_layout(title='Box Plots for Numerical Data')
             fig.update_layout(height=500, width=500)
             st.plotly_chart(fig)
@@ -62,7 +65,7 @@ def EDA():
             # Calculating the cumulative sum of the churn rate within each gender group
             churn_rate_by_tenure['cum_count'] = churn_rate_by_tenure.groupby('gender')['count'].cumsum()
             # Creating the ECDF plot using Plotly Express
-            fig = px.line(churn_rate_by_tenure, x='tenure', y='cum_count', color='gender', color_discrete_map={'Female': 'blue', 'Male': 'grey'},
+            fig = px.line(churn_rate_by_tenure, x='tenure', y='cum_count', color='gender', color_discrete_map={'Female': 'blue', 'Male': 'pink'},
                         title='Churn Rate vs Tenure by Gender', 
                         labels={'cum_count': 'Churn Rate'})
             # Update layout
@@ -138,8 +141,7 @@ def KPI():
 
 def dashboard():
 
-    st.header('Welcome to our Dashboard')
-
+    st.markdown("<h1 style='text-align:left;'>Welcome to our Dashboard</h1>", unsafe_allow_html=True)
 
     st.selectbox('Select dashboard type',['EDA dashboard','KPI dashboard'],key='dashSelected')
 
