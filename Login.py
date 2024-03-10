@@ -49,8 +49,8 @@ if st.session_state["authentication_status"]:
     
     st.write(f'## ♣️Welcome *{st.session_state["name"]}*♣️')
     st.markdown('#### Please proceed to the Home Page🍵')
-    if st.button("Home"):
-        st.switch_page("Pages/00_🏠_Home.py")
+    #if st.button("Home"):
+    #st.link_button("Home","Pages/00_🏠_Home.py")
     authenticator.logout()
 
     
@@ -58,7 +58,7 @@ elif st.session_state["authentication_status"] is False:
      st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
     st.warning('Please enter username and password provided at sidebar')
-    
+
 
 with open('./config.yaml', 'w') as file:
     yaml.dump(config, file, default_flow_style=False)

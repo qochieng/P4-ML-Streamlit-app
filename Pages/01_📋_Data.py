@@ -96,8 +96,8 @@ elif column_selected == 'Categorical':
 else:
     st.dataframe(df)
 
-if st.button("Dashboard"):
-    st.switch_page("Pages/02_📊_Dashboard.py")
+# if st.button("Dashboard"):
+#     st.switch_page("Pages/02_📊_Dashboard.py")
 
 
 
