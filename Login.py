@@ -22,9 +22,9 @@ st.set_page_config(
 )
 
 
-st.sidebar.markdown("**Guest Login Credentials**")
-st.sidebar.markdown("Username: guest")
-st.sidebar.markdown("Password: guest123")
+st.markdown("**Guest Login Credentials**")
+st.markdown("Username: guest")
+st.markdown("Password: guest123")
 
 # Load configuration from YAML file
 with open('./config.yaml') as file:
@@ -46,7 +46,6 @@ if 'authentication_status' not in st.session_state:
     st.session_state.authentication_status = False
 # Display sidebar and main content only if user is authenticated
 if st.session_state["authentication_status"]:
-    
     st.write(f'## ♣️Welcome *{st.session_state["name"]}*♣️')
     st.markdown('#### Please proceed to the Home Page🍵')
     #if st.button("Home"):
@@ -57,7 +56,7 @@ if st.session_state["authentication_status"]:
 elif st.session_state["authentication_status"] is False:
      st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter username and password provided at sidebar')
+    st.warning('Please enter username and password provided at above')
 
 
 with open('./config.yaml', 'w') as file:
