@@ -39,7 +39,7 @@ def EDA():
 
 
             data= df['tenure']
-            fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['rebeccapurple'])
+            fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['pink'])
             fig.update_layout(title='Tenure Distribution',width=500, height=500)
             st.plotly_chart(fig)
 
