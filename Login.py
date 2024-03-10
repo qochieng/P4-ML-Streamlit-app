@@ -58,8 +58,10 @@ elif st.session_state["authentication_status"] is False:
      st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
     st.warning('Please enter username and password provided at sidebar')
+    
 
-
+with open('./config.yaml', 'w') as file:
+    yaml.dump(config, file, default_flow_style=False)
 # if st.session_state["authentication_status"]:
 #     try:
 #         if authenticator.reset_password(st.session_state["username"]):
@@ -68,8 +70,7 @@ elif st.session_state["authentication_status"] is None:
 #         st.error(e)
 
 # Save updated configuration to YAML file
-with open('./config.yaml', 'w') as file:
-    yaml.dump(config, file, default_flow_style=False)
+
 
 
 
