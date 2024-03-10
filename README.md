@@ -67,7 +67,7 @@ Churn prediction app is an app that allows a user to predict the likelihood of a
 4) install the necessary Libraries in requirements.txt
 
 ```sh
-    pip install requiremnts.txt
+    pip install -r requiremnts.txt
 ```
 
 ## How to run

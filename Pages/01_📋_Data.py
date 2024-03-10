@@ -49,36 +49,42 @@ expand.write(f" Payment Method -- The customer's payment method ")
 expand.write(f" MonthlyCharges -- The amount charged to the customer monthly")
 
 
-#Cache connection used to connect database
-@st.cache_resource(show_spinner='Connecting...')
+# #Cache connection used to connect database
+# @st.cache_resource(show_spinner='Connecting...')
        
-    #Loading environment variables from secret.toml file into a dictionary
-def load_data():
-    environment_variables = st.secrets['Database']
+#     #Loading environment variables from secret.toml file into a dictionary
+# def load_data():
+#     environment_variables = st.secrets['Database']
 
 
-    #Getting the values for the credentials you set in the '.env' file
-    server = environment_variables['server']
-    database = environment_variables['dbname']
-    username = environment_variables['user']
-    password = environment_variables['password']
+#     #Getting the values for the credentials you set in the '.env' file
+#     server = environment_variables['server']
+#     database = environment_variables['dbname']
+#     username = environment_variables['user']
+#     password = environment_variables['password']
 
-    #Creating a connection string
-    connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};MARS_Connection=yes;MinProtocolVersion=TLSv1.2;'
+#     #Creating a connection string
+#     connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};MARS_Connection=yes;MinProtocolVersion=TLSv1.2;'
 
-    #establishing a connestion to the database using pyodbc library
-    conn = pyodbc.connect(connection_string)
+#     #establishing a connestion to the database using pyodbc library
+#     conn = pyodbc.connect(connection_string)
 
-    #retrieving data from database
-    query = 'Select * From dbo.LP2_Telco_churn_first_3000'
-    df = pd.read_sql(query,conn)
-
-
-    conn.close()
-    return df
+#     #retrieving data from database
+#     query = 'Select * From dbo.LP2_Telco_churn_first_3000'
+#     df = pd.read_sql(query,conn)
+#     df.to_csv('Telco_churn_3000.csv', index=False)
 
 
-df = load_data()
+
+#     conn.close()
+#     return df
+
+# df = load_data()
+
+# Path of the saved data to csv
+path = './data/Telco_churn_3000.csv'
+# To read the file as CSV
+df = pd.read_csv(path)
 
 column_selected = st.selectbox('Column Type:', ['Numeric', 'Categorical', 'All columns'], key='columnselected')
 
@@ -96,17 +102,3 @@ if st.button("Dashboard"):
 
 
 
-# st.title("Data View")
-
-# uploaded_files = st.file_uploader("Choose csv a file")
-# if uploaded_files is not None:
-#     df = pd.read_csv(uploaded_files)
-#     st.write(df)
-
-
-# df = pd.read_csv("./Telco_data.csv")
-
-# #read csv
-
-# st.title("Telco_Churn Sample Data")  # add a title
-# st.write(df) 
