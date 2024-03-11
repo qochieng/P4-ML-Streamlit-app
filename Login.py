@@ -15,63 +15,40 @@ import pickle
 
 
 
-st.set_page_config(
-    page_title='TELCO CHURN RATE',
-    page_icon="🏠",
-    layout="wide"
-)
-st.markdown("**Guest Login Credentials**")
-st.markdown("Username: guest")
-st.markdown("Password: guest123")
-# Load configuration from YAML file
-with open('./config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+def login():
 
-# Authenticate user
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
+    with open('./config.yaml') as file:
+        config = yaml.load(file, Loader=SafeLoader)
 
-authenticator.login()
+    st.sidebar.markdown("**Guest Login Credentials**")
+    st.sidebar.markdown("Username: guest")
+    st.sidebar.markdown("Password: guest123")
 
-
-# Display login information
-
-
-# Display sidebar and main content only if user is authenticated
-if st.session_state.get("authentication_status"):
-    st.write(f'## ♣️Welcome *{st.session_state["name"]}*♣️')
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['name'],
+        config['cookie']['key'],
+        config['cookie']['expiry_days'],
+        config['preauthorized']
+    )
     
-    #path ="E:\AZUBI\DATA ANALYTICS\Analytics\PROJECTS\Project 4\P4-ML-Streamlit-app\Pages"
-    # page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History","✍️Feedback"])
+    authenticator.login()
+    if st.session_state["authentication_status"] is True:
+        authenticator.logout(location='sidebar', key='logout-button')
+        
+    if st.session_state.get("authentication_status") is False:
+        st.error('Username/password is incorrect')
+    if st.session_state.get("authentication_status") is None:
+        st.warning('Please enter the username and password provided above')
 
-    # if page_selection == "Login.py":
-    #     st.switch_page("Login.py")
-    # elif page_selection == "🏠Home":
-    #     st.switch_page("pages/00_🏠_Home.py")
-    # elif page_selection == "📋Data":
-    #     st.switch_page("pages/01_📋_Data.py")
-    # elif page_selection == "📊Dashboard":
-    #     st.switch_page("pages/02_📊_Dashboard.py")
-    # elif page_selection == "📈Predict":
-    #     st.switch_page("pages/03_📈_Predict.py")
-    # elif page_selection == "📚History":
-    #     st.switch_page("pages/04_📚_History.py")
-    
-if st.session_state.get("authentication_status") is False:
-    st.error('Username/password is incorrect')
-if st.session_state.get("authentication_status") is None:
-    st.warning('Please enter the username and password provided above')
-    
-authenticator.logout()
+if __name__ == "__main__":
+
+    login()
+        
 
 
-with open('./config.yaml', 'w') as file:
-    yaml.dump(config, file, default_flow_style=False)
+
+
 
 
     

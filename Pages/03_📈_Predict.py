@@ -21,6 +21,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 #from sktime.transformations.series.boxcox import LogTransformer
 from feature_engine.transformation import LogTransformer
 import datetime
+from Login import login
 # Initialize authentication_status if it's not already initialized
 # Check authentication status
 
@@ -41,10 +42,8 @@ st.set_page_config(
 )
 
 
-if not st.session_state.get("authentication_status"):
-    st.info('Please Login to use Platform.')
-else:
-    st.sidebar.radio('02_📊_Dashboard.py')
+login()
+if st.session_state["authentication_status"] is True:
 
     st.title = ("Enter Customer Details")
 
@@ -195,6 +194,7 @@ else:
 
 
     if __name__ == "__main__":
+        
         st.markdown("<h1 style='text-align:left;'>Enter Customer Details To Make Prediction</h1>", unsafe_allow_html=True)
         
         
@@ -203,8 +203,6 @@ else:
         final_prediction = st.session_state['prediction']
         probability= st.session_state['probability']
 
-
-    # If not, create the directory and file
 
         if not os.path.exists('./data/history.csv'):
             os.makedirs('./data', exist_ok=True)
