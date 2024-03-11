@@ -20,7 +20,9 @@ st.set_page_config(
     page_icon="🏠",
     layout="wide"
 )
-
+st.markdown("**Guest Login Credentials**")
+st.markdown("Username: guest")
+st.markdown("Password: guest123")
 # Load configuration from YAML file
 with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -38,41 +40,48 @@ authenticator.login()
 
 
 # Display login information
-st.markdown("**Guest Login Credentials**")
-st.markdown("Username: guest")
-st.markdown("Password: guest123")
+
 
 # Display sidebar and main content only if user is authenticated
 if st.session_state.get("authentication_status"):
     st.write(f'## ♣️Welcome *{st.session_state["name"]}*♣️')
     
-#if 'authentication_status' in st.session_state:
-    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    #path ="E:\AZUBI\DATA ANALYTICS\Analytics\PROJECTS\Project 4\P4-ML-Streamlit-app\Pages"
+    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History","✍️Feedback"])
+
     if page_selection == "Login.py":
         st.switch_page("Login.py")
     elif page_selection == "🏠Home":
-        st.switch_page("Pages/00_🏠_Home.py")
+        st.switch_page("pages/00_🏠_Home.py")
     elif page_selection == "📋Data":
-        st.switch_page("Pages/01_📋_Data.py")
+        st.switch_page("pages/01_📋_Data.py")
     elif page_selection == "📊Dashboard":
-        st.switch_page("Pages/02_📊_Dashboard.py")
+        st.switch_page("pages/02_📊_Dashboard.py")
     elif page_selection == "📈Predict":
-        st.switch_page("Pages/03_📈_Predict.py")
+        st.switch_page("pages/03_📈_Predict.py")
     elif page_selection == "📚History":
-        st.switch_page("Pages/04_📚_History.py")
+        st.switch_page("pages/04_📚_History.py")
     
-    #if st.sidebar.button('Logout',key='logout_button'):
-    authenticator.logout()
-        #st.session_state["authentication_status"] = False
-else:
-    if st.session_state.get("authentication_status") is False:
-        st.error('Please enter the username and password provided above')
-    else:
-        st.warning('Username/password is incorrect')
+if st.session_state.get("authentication_status") is False:
+    st.error('Username/password is incorrect')
+if st.session_state.get("authentication_status") is None:
+    st.warning('Please enter the username and password provided above')
+    
+authenticator.logout()
 
 
 with open('./config.yaml', 'w') as file:
     yaml.dump(config, file, default_flow_style=False)
+
+
+    
+    #if __name__ == "__main__":
+
+
+
+
+    
+
 # if st.session_state["authentication_status"]:
     # try:
     #     if authenticator.reset_password(st.session_state["username"]):
@@ -81,7 +90,6 @@ with open('./config.yaml', 'w') as file:
     #     st.error(e)
 
 #Save updated configuration to YAML file
-
 
 
 
