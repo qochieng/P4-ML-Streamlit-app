@@ -24,6 +24,38 @@ st.set_page_config(
     page_icon="🏠",
     layout = 'wide'
 )
+
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+# Authenticate user
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+if 'authentication_status' in st.session_state:
+    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    if page_selection == "Login.py":
+        st.switch_page("Login.py")
+    elif page_selection == "🏠Home":
+        st.switch_page("Pages/00_🏠_Home.py")
+    elif page_selection == "📋Data":
+        st.switch_page("Pages/01_📋_Data.py")
+    elif page_selection == "📊Dashboard":
+        st.switch_page("Pages/02_📊_Dashboard.py")
+    elif page_selection == "📈Predict":
+        st.switch_page("Pages/03_📈_Predict.py")
+    elif page_selection == "📚History":
+        st.switch_page("Pages/04_📚_History.py")
+    if st.sidebar.button('Logout',key='logout_button'):
+        authenticator.logout()
+        st.session_state["authentication_status"] = False
+        st.switch_page("Login.py")
+
 st.markdown("<h1 style='text-align:center;'>Welcome to Churn Prediction App</h1>", unsafe_allow_html=True)
 
 col1,col2 = st.columns(2)

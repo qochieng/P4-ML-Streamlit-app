@@ -7,21 +7,60 @@ import streamlit as st
 import pandas as pd
 import pyodbc
 import toml
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
+#from pathlib import path 
+import os
+from PIL import Image
+from st_pages import Page, show_pages, add_page_title
 #import toml
 # Initialize authentication_status if it's not already initialized
 if 'authentication_status' not in st.session_state:
     st.session_state.authentication_status = False
 
-# Check authentication status
-if not st.session_state.authentication_status:
-    st.info('Please Login to use Platform.')
-    st.stop()
+
+
  
 st.set_page_config(
     page_title= 'View Data',
     page_icon= '📋',
     layout= 'wide'
 )
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+if not st.session_state.authentication_status:
+    st.info('Please Login to use Platform.')
+    st.stop()
+
+
+if 'authentication_status' in st.session_state:
+    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    if page_selection == "Login.py":
+        st.switch_page("Login.py")
+    elif page_selection == "🏠Home":
+        st.switch_page("Pages/00_🏠_Home.py")
+    elif page_selection == "📋Data":
+        st.switch_page("Pages/01_📋_Data.py")
+    elif page_selection == "📊Dashboard":
+        st.switch_page("Pages/02_📊_Dashboard.py")
+    elif page_selection == "📈Predict":
+        st.switch_page("Pages/03_📈_Predict.py")
+    elif page_selection == "📚History":
+        st.switch_page("Pages/04_📚_History.py")
+    if st.sidebar.button('Logout',key='logout_button'):
+        authenticator.logout()
+        st.session_state["authentication_status"] = False
+        st.switch_page("Login.py")
+# Check authentication status
 st.markdown("<h1 style='text-align:left;'>Proprietory Data from Vodafone</h1>", unsafe_allow_html=True)
 
 

@@ -1,6 +1,13 @@
 import streamlit as st
 import pandas as pd 
 import numpy as np
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
+#from pathlib import path 
+import os
+from PIL import Image
+from st_pages import Page, show_pages, add_page_title
 from streamlit_date_picker import date_range_picker, PickerType, Unit, date_picker
 from streamlit_datetime_range_picker import datetime_range_picker
 from PIL import Image
@@ -18,7 +25,34 @@ st.set_page_config(
     page_title = 'Show History',
     layout = 'wide'
 )
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+if 'authentication_status' in st.session_state:
+    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    if page_selection == "Login.py":
+        st.switch_page("Login.py")
+    elif page_selection == "🏠Home":
+        st.switch_page("Pages/00_🏠_Home.py")
+    elif page_selection == "📋Data":
+        st.switch_page("Pages/01_📋_Data.py")
+    elif page_selection == "📊Dashboard":
+        st.switch_page("Pages/02_📊_Dashboard.py")
+    elif page_selection == "📈Predict":
+        st.switch_page("Pages/03_📈_Predict.py")
+    elif page_selection == "📚History":
+        st.switch_page("Pages/04_📚_History.py")
+    if st.sidebar.button('Logout',key='logout_button'):
+        authenticator.logout()
+        st.session_state["authentication_status"] = False
 
 def past_predictions():
     path = './data/history.csv'

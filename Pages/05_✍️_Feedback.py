@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd 
 import numpy as np
 import streamlit as st
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
 from streamlit_feedback import streamlit_feedback
 # Initialize authentication_status if it's not already initialized
 if 'authentication_status' not in st.session_state:
@@ -17,7 +20,35 @@ st.set_page_config(
     page_title = 'Feedback Page',
     layout = 'centered'
 )
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+if 'authentication_status' in st.session_state:
+    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    if page_selection == "Login.py":
+        st.switch_page("Login.py")
+    elif page_selection == "🏠Home":
+        st.switch_page("Pages/00_🏠_Home.py")
+    elif page_selection == "📋Data":
+        st.switch_page("Pages/01_📋_Data.py")
+    elif page_selection == "📊Dashboard":
+        st.switch_page("Pages/02_📊_Dashboard.py")
+    elif page_selection == "📈Predict":
+        st.switch_page("Pages/03_📈_Predict.py")
+    elif page_selection == "📚History":
+        st.switch_page("Pages/04_📚_History.py")
+    if st.sidebar.button('Logout',key='logout_button'):
+        authenticator.logout()
+        st.session_state["authentication_status"] = False
+        st.switch_page("Login.py")
 #with st.form('Feedback Form'):
 st.markdown('### Please enter Feedback or Questions')
 
