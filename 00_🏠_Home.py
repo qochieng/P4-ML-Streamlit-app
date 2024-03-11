@@ -33,12 +33,8 @@ authenticator = stauth.Authenticate(
  
 name, authentication_status, username = authenticator.login(location='sidebar')
 
-if st.sidebar.button('Logout',key='logout_button'):
-    authenticator.logout()
-
-if not st.session_state.get("authentication_status"):
-    st.info('Please Login to use Platform.')
-else:
+if st.session_state["authentication_status"]:
+    authenticator.logout(location='sidebar', key='logout-button')
 
     st.markdown("<h1 style='text-align:center;'>Welcome to Churn Prediction App</h1>", unsafe_allow_html=True)
 
@@ -70,6 +66,10 @@ else:
         st.write('**Contact me at**: qochieng88@outlook.com')
         st.link_button("App Github Repository","https://github.com/qochieng/P4-ML-Streamlit-app")
 
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
+elif st.session_state["authentication_status"] is None:
+    st.info('Enter username and password to use the app.')
 
 # if st.button("Next"):
 #     st.switch_page("Pages/01_📋_Data.py")
