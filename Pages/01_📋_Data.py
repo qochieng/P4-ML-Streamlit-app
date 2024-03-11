@@ -16,12 +16,8 @@ from PIL import Image
 from st_pages import Page, show_pages, add_page_title
 #import toml
 # Initialize authentication_status if it's not already initialized
-if 'authentication_status' not in st.session_state:
-    st.session_state.authentication_status = False
 
 
-
- 
 st.set_page_config(
     page_title= 'View Data',
     page_icon= '📋',

@@ -29,7 +29,9 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
     config['preauthorized']
 )
- 
+st.markdown("**Guest Login Credentials**")
+st.markdown("Username: guest")
+st.markdown("Password: guest123")
  
 name, authentication_status, username = authenticator.login(location='sidebar')
 
@@ -69,7 +71,7 @@ if st.session_state["authentication_status"]:
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
-    st.info('Enter username and password to use the app.')
+    st.info('Enter username and password provided to use the app.')
 
 # if st.button("Next"):
 #     st.switch_page("Pages/01_📋_Data.py")
