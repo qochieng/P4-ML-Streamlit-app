@@ -6,7 +6,7 @@ credentials:
   usernames:
     guest:
       email: guest@gmail.com
-      logged_in: false
+      logged_in: true
       name: Guest
       password: $2b$12$PhpfXytbgbdw7/gNxAC6G.KPAsQmTB.qnUEsFs2YbIGMpRHa5eSQe
     jsmith:
@@ -16,7 +16,7 @@ credentials:
       password: $2b$12$DqEq0dNrR0puXuMOFpgPReLHXashAWOXjEibixx63zAAqq6feC9M6
     qochieng:
       email: qochieng@yahoo.com
-      logged_in: true
+      logged_in: false
       name: Quintor
       password: $2b$12$n/7rli4LqJFkuqN7amQoW.3y67uFtUVMx54N.WKYusucYUD2w8qta
     rbriggs:

@@ -32,21 +32,21 @@ authenticator = stauth.Authenticate(
 )
 
 if 'authentication_status' in st.session_state:
-    path ="E:\AZUBI\DATA ANALYTICS\Analytics\PROJECTS\Project 4\P4-ML-Streamlit-app\Pages"
-    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
+    # path ="E:\AZUBI\DATA ANALYTICS\Analytics\PROJECTS\Project 4\P4-ML-Streamlit-app\Pages"
+    # page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
 
-    if page_selection == "Login.py":
-        st.switch_page("Login.py")
-    elif page_selection == "🏠Home":
-        st.switch_page("pages/00_🏠_Home.py")
-    elif page_selection == "📋Data":
-        st.switch_page("pages/01_📋_Data.py")
-    elif page_selection == "📊Dashboard":
-        st.switch_page("pages/02_📊_Dashboard.py")
-    elif page_selection == "📈Predict":
-        st.switch_page("pages/03_📈_Predict.py")
-    elif page_selection == "📚History":
-        st.switch_page("pages/04_📚_History.py")
+    # if page_selection == "Login.py":
+    #     st.switch_page("Login.py")
+    # elif page_selection == "🏠Home":
+    #     st.switch_page("pages/00_🏠_Home.py")
+    # elif page_selection == "📋Data":
+    #     st.switch_page("pages/01_📋_Data.py")
+    # elif page_selection == "📊Dashboard":
+    #     st.switch_page("pages/02_📊_Dashboard.py")
+    # elif page_selection == "📈Predict":
+    #     st.switch_page("pages/03_📈_Predict.py")
+    # elif page_selection == "📚History":
+    #     st.switch_page("pages/04_📚_History.py")
     
     if st.sidebar.button('Logout',key='logout_button'):
         authenticator.logout()
