@@ -19,14 +19,26 @@ st.set_page_config(
     layout = 'wide'
 )
 
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+ 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+ 
+ 
+name, authentication_status, username = authenticator.login(location='sidebar')
+
+if st.sidebar.button('Logout',key='logout_button'):
+    authenticator.logout()
+
 if not st.session_state.get("authentication_status"):
     st.info('Please Login to use Platform.')
 else:
-
-    if st.sidebar.button('Logout',key='logout_button'):
-        #authenticator.logout()
-        st.session_state["authentication_status"] = False
-        
 
     st.markdown("<h1 style='text-align:center;'>Welcome to Churn Prediction App</h1>", unsafe_allow_html=True)
 

@@ -20,176 +20,136 @@ st.set_page_config(
     layout = 'wide'
 )
 
-with open('./config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+if not st.session_state.get("authentication_status"):
+    st.info('Please Login to use Platform.')
+else:
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
+    path = "./data/Telco_data.csv"
+    df =pd.read_csv(path)
 
+    # Function for EDA dashboard
 
-if 'authentication_status' in st.session_state:
-    page_selection = st.sidebar.radio("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History"])
-    if page_selection == "Login.py":
-        st.switch_page("Login.py")
-    elif page_selection == "🏠Home":
-        st.switch_page("pages/00_🏠_Home.py")
-    elif page_selection == "📋Data":
-        st.switch_page("pages/01_📋_Data.py")
-    elif page_selection == "📊Dashboard":
-        st.switch_page("pages/02_📊_Dashboard.py")
-    elif page_selection == "📈Predict":
-        st.switch_page("pages/03_📈_Predict.py")
-    elif page_selection == "📚History":
-        st.switch_page("pages/04_📚_History.py")
-    if st.sidebar.button('Logout',key='logout_button'):
-        authenticator.logout()
-        st.session_state["authentication_status"] = False
-        #st.switch_page("Login.py")
+    def EDA():
 
-path = "./data/Telco_data.csv"
-df =pd.read_csv(path)
+        col1, col2, col3,col4 = st.columns(4)
 
-# Function for EDA dashboard
-
-def EDA():
-
-      col1, col2, col3,col4 = st.columns(4)
-
-        
-      with col1:
             
+        with col1:
+                
 
-            Contract_type = df['Contract'].value_counts().reset_index()
-            Contract_type.columns = ['Contract', 'count']
-            fig = px.bar(Contract_type, x='Contract', y='count', color='Contract', color_discrete_map={'Month-to-month': 'pink', 'One year': 'skyblue', 'Two year': 'grey'})
-            fig.update_layout(title='Churn based on Contract',width=500, height=500)
+                Contract_type = df['Contract'].value_counts().reset_index()
+                Contract_type.columns = ['Contract', 'count']
+                fig = px.bar(Contract_type, x='Contract', y='count', color='Contract', color_discrete_map={'Month-to-month': 'pink', 'One year': 'skyblue', 'Two year': 'grey'})
+                fig.update_layout(title='Churn based on Contract',width=500, height=500)
 
-            st.plotly_chart(fig)
-
-
-            data= df['tenure']
-            fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['pink'])
-            fig.update_layout(title='Tenure Distribution',width=500, height=500)
-            st.plotly_chart(fig)
-
-    
-
-      with col4:
-
-
-            data = df[['tenure', 'TotalCharges', 'MonthlyCharges','Churn']]
-            fig = px.box(data, color='Churn', notched=True,)
-            fig.update_layout(title='Box Plots for Numerical Data')
-            fig.update_layout(height=500, width=500)
-            st.plotly_chart(fig)
-
-
-              #  Empirical Cumulative Distribution Function (ECDF) charts.
-
-            df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
-
-            churn_rate_by_tenure = df.groupby(['gender', 'tenure'])['Churn'].mean().reset_index(name='count')
-            # Sorting the values by 'tenure' within each gender group
-            churn_rate_by_tenure.sort_values(by=['gender', 'tenure'], inplace=True)
-            # Calculating the cumulative sum of the churn rate within each gender group
-            churn_rate_by_tenure['cum_count'] = churn_rate_by_tenure.groupby('gender')['count'].cumsum()
-            # Creating the ECDF plot using Plotly Express
-            fig = px.line(churn_rate_by_tenure, x='tenure', y='cum_count', color='gender', color_discrete_map={'Female': 'blue', 'Male': 'pink'},
-                        title='Churn Rate vs Tenure by Gender', 
-                        labels={'cum_count': 'Churn Rate'})
-            # Update layout
-            fig.update_layout( xaxis_title='Tenure', yaxis_title='Churn Rate',width=500, height=500)
-            # Display the chart using Streamlit
-            st.plotly_chart(fig)
-
-
-# Violin plots is a statistical representation of numerical data. It is similar to a box plot,
-      with col2:
-           pass            
-# Function for KPI dashboard
-      
- 
-
-def KPI():
-
-    col1,col2,col3,col4,col5,col6,col7 = st.columns(7)
-
-    with col1:
-
-     
-        data = df[['gender', 'Churn']]
-        churn_counts = data.groupby('gender')['Churn'].value_counts().unstack(fill_value=0)
-        fig = px.pie(names=churn_counts.index, values=churn_counts['Yes'], color=churn_counts.index,color_discrete_map={'Female': 'pink', 'Male': 'skyblue'},
-                    title='Churn Rate by Gender', labels={'Churn': 'Churned', 'gender': 'Gender'},hole=0.3)
-        fig.update_traces(textposition='inside', textinfo='percent+label')
-        st.plotly_chart(fig)
-
-        # Violin plots is a statistical representation of numerical data. It is similar to a box plot,
-
-        data = df['TotalCharges']
-        fig = px.violin(data, title='Total Charges Distribution',y="TotalCharges",width=500, height=500)
-        st.plotly_chart(fig)
-
-
-    with col7:
-         
-         data = df[['Churn']]
-         churn_counts = data['Churn'].value_counts()
-         fig = px.pie(names=churn_counts.index, values=churn_counts.values,
-                    title='Number of Customers Churned')
-         fig.update_traces(pull=[0, 0.1])  #desired explosion effect
-         fig.update_traces(textposition='inside', textinfo='percent+label') 
-         st.plotly_chart(fig)
-
-
-         data = df[['gender', 'TotalCharges']]
-         churn_counts = data.groupby('gender')['TotalCharges'].sum().reset_index()
-         fig.update_layout(title='Tenure Distribution',width=400, height=500)
-         fig = px.bar(churn_counts, x='gender', y='TotalCharges',title="Average Sum Charges per gender" ,color='gender',labels={'TotalCharges': 'TotalCharges', 'gender': 'Gender'},color_discrete_map={'Female': 'pink', 'Male': 'grey'},)
-        
-         st.plotly_chart(fig)
-
-
-    with col2:
-         
-         def plot_payment_methods(df):
-                payment_counts = df['PaymentMethod'].value_counts().reset_index()
-                payment_counts.columns = ['PaymentMethod', 'count']
-                fig = px.bar(payment_counts, x='PaymentMethod', y='count', color='PaymentMethod', color_discrete_map={'Bank transfer (automatic)': 'pink', 'Credit card (automatic)': 'skyblue', 'Electronic check': 'violet', 'Mailed check': 'grey'})
-                fig.update_layout(title='Payment Methods')
                 st.plotly_chart(fig)
 
-    plot_payment_methods(df)
+
+                data= df['tenure']
+                fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['pink'])
+                fig.update_layout(title='Tenure Distribution',width=500, height=500)
+                st.plotly_chart(fig)
+
+        
+
+        with col4:
+
+
+                data = df[['tenure', 'TotalCharges', 'MonthlyCharges','Churn']]
+                fig = px.box(data, color='Churn', notched=True,)
+                fig.update_layout(title='Box Plots for Numerical Data')
+                fig.update_layout(height=500, width=500)
+                st.plotly_chart(fig)
+
+
+                #  Empirical Cumulative Distribution Function (ECDF) charts.
+
+                df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
+
+                churn_rate_by_tenure = df.groupby(['gender', 'tenure'])['Churn'].mean().reset_index(name='count')
+                # Sorting the values by 'tenure' within each gender group
+                churn_rate_by_tenure.sort_values(by=['gender', 'tenure'], inplace=True)
+                # Calculating the cumulative sum of the churn rate within each gender group
+                churn_rate_by_tenure['cum_count'] = churn_rate_by_tenure.groupby('gender')['count'].cumsum()
+                # Creating the ECDF plot using Plotly Express
+                fig = px.line(churn_rate_by_tenure, x='tenure', y='cum_count', color='gender', color_discrete_map={'Female': 'blue', 'Male': 'pink'},
+                            title='Churn Rate vs Tenure by Gender', 
+                            labels={'cum_count': 'Churn Rate'})
+                # Update layout
+                fig.update_layout( xaxis_title='Tenure', yaxis_title='Churn Rate',width=500, height=500)
+                # Display the chart using Streamlit
+                st.plotly_chart(fig)
+
+
+    # Violin plots is a statistical representation of numerical data. It is similar to a box plot,
+        with col2:
+            pass            
+    # Function for KPI dashboard
+        
     
 
-# Function to instantiate the selected dashboard
+    def KPI():
 
-def dashboard():
+        col1,col2,col3,col4,col5,col6,col7 = st.columns(7)
 
-    st.markdown("<h1 style='text-align:left;'>Welcome to our Dashboard</h1>", unsafe_allow_html=True)
+        with col1:
 
-    st.selectbox('Select dashboard type',['EDA dashboard','KPI dashboard'],key='dashSelected')
+        
+            data = df[['gender', 'Churn']]
+            churn_counts = data.groupby('gender')['Churn'].value_counts().unstack(fill_value=0)
+            fig = px.pie(names=churn_counts.index, values=churn_counts['Yes'], color=churn_counts.index,color_discrete_map={'Female': 'pink', 'Male': 'skyblue'},
+                        title='Churn Rate by Gender', labels={'Churn': 'Churned', 'gender': 'Gender'},hole=0.3)
+            fig.update_traces(textposition='inside', textinfo='percent+label')
+            st.plotly_chart(fig)
 
-    col1, col2 = st.columns(2)
+            # Violin plots is a statistical representation of numerical data. It is similar to a box plot,
 
-    with col1:
-         
-        if st.session_state['dashSelected']=='EDA dashboard':
-            EDA()
-
-        if st.session_state['dashSelected']=='KPI dashboard':
-            KPI()
-
-    with col2:
-         pass
-
+            data = df['TotalCharges']
+            fig = px.violin(data, title='Total Charges Distribution',y="TotalCharges",width=500, height=500)
+            st.plotly_chart(fig)
 
 
-if __name__ == "__main__":
+        with col7:
+            
+            data = df[['Churn']]
+            churn_counts = data['Churn'].value_counts()
+            fig = px.pie(names=churn_counts.index, values=churn_counts.values,
+                        title='Number of Customers Churned')
+            fig.update_traces(pull=[0, 0.1])  #desired explosion effect
+            fig.update_traces(textposition='inside', textinfo='percent+label') 
+            st.plotly_chart(fig)
 
-    dashboard()
+
+            data = df[['gender', 'TotalCharges']]
+            churn_counts = data.groupby('gender')['TotalCharges'].sum().reset_index()
+            fig.update_layout(title='Tenure Distribution',width=400, height=500)
+            fig = px.bar(churn_counts, x='gender', y='TotalCharges',title="Average Sum Charges per gender" ,color='gender',labels={'TotalCharges': 'TotalCharges', 'gender': 'Gender'},color_discrete_map={'Female': 'pink', 'Male': 'grey'},)
+            
+            st.plotly_chart(fig)
+
+
+        with col2:
+            
+            def plot_payment_methods(df):
+                    payment_counts = df['PaymentMethod'].value_counts().reset_index()
+                    payment_counts.columns = ['PaymentMethod', 'count']
+                    fig = px.bar(payment_counts, x='PaymentMethod', y='count', color='PaymentMethod', color_discrete_map={'Bank transfer (automatic)': 'pink', 'Credit card (automatic)': 'skyblue', 'Electronic check': 'violet', 'Mailed check': 'grey'})
+                    fig.update_layout(title='Payment Methods')
+                    st.plotly_chart(fig)
+
+        plot_payment_methods(df)
+        
+
+    # Function to instantiate the selected dashboard
+
+  
+            
+if st.session_state['dashSelected']=='EDA dashboard':
+    EDA()
+
+if st.session_state['dashSelected']=='KPI dashboard':
+    KPI()
+
+
+
+    
