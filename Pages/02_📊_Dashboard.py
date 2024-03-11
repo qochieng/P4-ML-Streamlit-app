@@ -11,9 +11,7 @@ from streamlit_date_picker import date_range_picker, PickerType, Unit, date_pick
 from streamlit_datetime_range_picker import datetime_range_picker
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
-if not st.session_state.authentication_status:
-    st.info('Please Login to use Platform.')
-    st.stop()
+
 
 st.set_page_config(
     page_title = 'Dashboard',

@@ -22,13 +22,8 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from feature_engine.transformation import LogTransformer
 import datetime
 # Initialize authentication_status if it's not already initialized
-if 'authentication_status' not in st.session_state:
-    st.session_state.authentication_status = False
-
 # Check authentication status
-if not st.session_state.authentication_status:
-    st.info('Please Login to use Platform.')
-    st.stop()
+
 
 class LogTransformer():
     def __init__(self, constant=1e-5):

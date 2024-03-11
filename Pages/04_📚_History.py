@@ -13,13 +13,7 @@ from streamlit_datetime_range_picker import datetime_range_picker
 from PIL import Image
 import datetime
 # Initialize authentication_status if it's not already initialized
-if 'authentication_status' not in st.session_state:
-    st.session_state.authentication_status = False
 
-# Check authentication status
-if not st.session_state.authentication_status:
-    st.info('Please Login to use Platform.')
-    st.stop()
 
 st.set_page_config(
     page_title = 'Show History',
