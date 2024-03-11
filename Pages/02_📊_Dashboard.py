@@ -21,11 +21,12 @@ st.set_page_config(
 if not st.session_state.get("authentication_status"):
     st.info('Please Login to use Platform.')
 else:
+    st.sidebar.radio('02_📊_Dashboard.py')
 
     path = "./data/Telco_data.csv"
     df =pd.read_csv(path)
 
-    # Function for EDA dashboard
+        # Function for EDA dashboard
 
     def EDA():
 
@@ -140,7 +141,7 @@ else:
 
     # Function to instantiate the selected dashboard
 
-  
+
             
 if st.session_state['dashSelected']=='EDA dashboard':
     EDA()

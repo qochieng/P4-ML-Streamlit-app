@@ -44,6 +44,7 @@ st.set_page_config(
 if not st.session_state.get("authentication_status"):
     st.info('Please Login to use Platform.')
 else:
+    st.sidebar.radio('02_📊_Dashboard.py')
 
     st.title = ("Enter Customer Details")
 

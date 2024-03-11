@@ -19,13 +19,14 @@ st.set_page_config(
     layout = 'wide'
 )
 
-st.markdown("**Guest Login Credentials**")
-st.markdown("Username: guest")
-st.markdown("Password: guest123")
 
 with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
- 
+
+st.sidebar.markdown("**Guest Login Credentials**")
+st.sidebar.markdown("Username: guest")
+st.sidebar.markdown("Password: guest123")
+
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -68,21 +69,7 @@ if st.session_state["authentication_status"]:
         st.markdown('### Need Help?')
         st.write('**Contact me at**: qochieng88@outlook.com')
         st.link_button("App Github Repository","https://github.com/qochieng/P4-ML-Streamlit-app")
-    page_selection = st.sidebar("Go to", ["Login","🏠Home","📋Data" ,"📊Dashboard", "📈Predict", "📚History","✍️Feedback"])
-
-    if page_selection == "Login.py":
-        st.switch_page("Login.py")
-    elif page_selection == "🏠Home":
-        st.switch_page("pages/00_🏠_Home.py")
-    elif page_selection == "📋Data":
-        st.switch_page("pages/01_📋_Data.py")
-    elif page_selection == "📊Dashboard":
-        st.switch_page("pages/02_📊_Dashboard.py")
-    elif page_selection == "📈Predict":
-        st.switch_page("pages/03_📈_Predict.py")
-    elif page_selection == "📚History":
-        st.switch_page("pages/04_📚_History.py")
-
+  
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
