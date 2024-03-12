@@ -15,15 +15,12 @@ from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 import os
 from PIL import Image
-from st_pages import Page, show_pages, add_page_title
 from sklearn.preprocessing import OneHotEncoder,LabelEncoder, OrdinalEncoder
 from sklearn.base import BaseEstimator, TransformerMixin
-#from sktime.transformations.series.boxcox import LogTransformer
 from feature_engine.transformation import LogTransformer
 import datetime
 from Login import login
-# Initialize authentication_status if it's not already initialized
-# Check authentication status
+
 
 
 class LogTransformer():
@@ -134,11 +131,7 @@ if st.session_state["authentication_status"] is True:
     # Append data to the CSV file, including column names only if writing header
     
         df.to_csv('./data/history.csv', mode='a', header=not os.path.exists('./data/history.csv'), index=False)
-
         prediction = pipeline.predict(df)
-
-    # To get Probability
-
         probability = pipeline.predict_proba(df)
 
     # To see the state
@@ -149,8 +142,6 @@ if st.session_state["authentication_status"] is True:
         return prediction 
 
     # Function of form creation
-
-    
 
     def display_form():
 

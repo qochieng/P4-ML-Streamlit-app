@@ -34,8 +34,6 @@ def dash():
 
                 
             with col1:
-                    
-
                     Contract_type = df['Contract'].value_counts().reset_index()
                     Contract_type.columns = ['Contract', 'count']
                     fig = px.bar(Contract_type, x='Contract', y='count', color='Contract', color_discrete_map={'Month-to-month': 'pink', 'One year': 'skyblue', 'Two year': 'grey'})
@@ -52,19 +50,15 @@ def dash():
             
 
             with col4:
-
-
                     data = df[['tenure', 'TotalCharges', 'MonthlyCharges','Churn']]
                     fig = px.box(data, color='Churn', notched=True,)
                     fig.update_layout(title='Box Plots for Numerical Data')
                     fig.update_layout(height=500, width=500)
                     st.plotly_chart(fig)
 
-
                     #  Empirical Cumulative Distribution Function (ECDF) charts.
 
                     df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
-
                     churn_rate_by_tenure = df.groupby(['gender', 'tenure'])['Churn'].mean().reset_index(name='count')
                     # Sorting the values by 'tenure' within each gender group
                     churn_rate_by_tenure.sort_values(by=['gender', 'tenure'], inplace=True)
@@ -74,9 +68,8 @@ def dash():
                     fig = px.line(churn_rate_by_tenure, x='tenure', y='cum_count', color='gender', color_discrete_map={'Female': 'blue', 'Male': 'pink'},
                                 title='Churn Rate vs Tenure by Gender', 
                                 labels={'cum_count': 'Churn Rate'})
-                    # Update layout
                     fig.update_layout( xaxis_title='Tenure', yaxis_title='Churn Rate',width=500, height=500)
-                    # Display the chart using Streamlit
+
                     st.plotly_chart(fig)
 
 
@@ -85,15 +78,11 @@ def dash():
                 pass            
         # Function for KPI dashboard
             
-        
-
         def KPI():
 
             col1,col2,col3,col4,col5,col6,col7 = st.columns(7)
 
             with col1:
-
-            
                 data = df[['gender', 'Churn']]
                 churn_counts = data.groupby('gender')['Churn'].value_counts().unstack(fill_value=0)
                 fig = px.pie(names=churn_counts.index, values=churn_counts['Yes'], color=churn_counts.index,color_discrete_map={'Female': 'pink', 'Male': 'skyblue'},
@@ -109,7 +98,6 @@ def dash():
 
 
             with col7:
-                
                 data = df[['Churn']]
                 churn_counts = data['Churn'].value_counts()
                 fig = px.pie(names=churn_counts.index, values=churn_counts.values,
@@ -128,7 +116,6 @@ def dash():
 
 
             with col2:
-                
                 def plot_payment_methods(df):
                         payment_counts = df['PaymentMethod'].value_counts().reset_index()
                         payment_counts.columns = ['PaymentMethod', 'count']
@@ -136,7 +123,7 @@ def dash():
                         fig.update_layout(title='Payment Methods')
                         st.plotly_chart(fig)
 
-            plot_payment_methods(df)
+                plot_payment_methods(df)
             
 
         # Function to instantiate the selected dashboard
