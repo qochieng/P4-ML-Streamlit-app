@@ -17,21 +17,17 @@ from Login import login
 #import toml
 # Initialize authentication_status if it's not already initialized
 
+
+st.set_page_config(
+    page_title= 'View Data',
+    page_icon= '📋',
+    layout= 'wide'
+)
+
 def data():
+
     login()
     if st.session_state["authentication_status"] is True:
-
-
-        st.set_page_config(
-            page_title= 'View Data',
-            page_icon= '📋',
-            layout= 'wide'
-        )
-
-# def data():
-
-#     login()
-#     if st.session_state["authentication_status"] is True:
    
         st.markdown("<h1 style='text-align:left;'>Proprietory Data from Vodafone</h1>", unsafe_allow_html=True)
         st.title = ('Data from Vodafone')
@@ -74,7 +70,7 @@ def data():
             st.dataframe(df)
 
 if __name__ == "__main__":
-
+    
     data()
 
 
