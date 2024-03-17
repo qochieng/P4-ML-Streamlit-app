@@ -39,7 +39,7 @@ def login():
     if st.session_state.get("authentication_status") is False:
         st.error('Username/password is incorrect')
     if st.session_state.get("authentication_status") is None:
-        st.warning('Please enter the username and password provided above')
+        st.warning('Please enter the username and password provided on sidebar')
 
 if __name__ == "__main__":
 
