@@ -74,7 +74,7 @@ Churn prediction app is an app that allows a user to predict the likelihood of a
 
 To run the program, run the follwing code in your terminal
 
-~~ Streamlit run Login.py
+~~ Streamlit run 🏠_Home.py
 
 * A Login webpage will open
 * To continue login using the provided credentials on the sidebar:[Username=guest] and [Password=guest123]
