@@ -123,7 +123,11 @@ if st.session_state["authentication_status"] is True:
     
         df['Model'] = st.session_state['SelectedModel']
         prediction = st.session_state['prediction']
-        df['Churn'] = ['Yes' if pred == 1 else 'No' for pred in prediction]
+
+        if st.session_state['prediction'] is not None:
+           df['Churn'] = ['Yes' if pred == 1 else 'No' for pred in prediction]
+        else:
+            df['Churn']= None
         df['Date'] = datetime.date.today()
 
     
@@ -198,9 +202,9 @@ if st.session_state["authentication_status"] is True:
         if not os.path.exists('./data/history.csv'):
             os.makedirs('./data', exist_ok=True)
     
-        if not final_prediction:
-            st.markdown('### Probability will show here')
-        elif final_prediction == 1:
+        # if not final_prediction:
+        #     st.markdown('### Probability will show here')
+        if final_prediction == 1:
             probability_of_yes = probability[0][1]*100
             st.markdown(f'#### This Customer will Churn with probability of {round(probability_of_yes,2)}%')
         else:

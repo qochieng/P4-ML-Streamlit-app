@@ -36,3 +36,15 @@ SeniorCitizen,gender,Partner,Dependents,PhoneService,MultipleLines,InternetServi
 0,Male,True,True,True,True,Fiber optic,Yes,Yes,Yes,Yes,Yes,No,0,Month-to-month,Yes,Electronic check,15.0,60.0,Random,No,2024-03-08
 0,Female,True,True,True,True,DSL,Yes,Yes,No,Yes,No,Yes,20,One year,No,Electronic check,15.0,1200.0,Gradient,Yes,2024-03-08
 1,Male,False,True,True,False,Fiber optic,No,Yes,Yes,No,No,Yes,0,Month-to-month,Yes,Electronic check,100.0,1700.0,Random,No,2024-03-08
+1,Female,False,True,False,None,Fiber optic,Yes,Yes,Yes,Yes,Yes,Yes,7,Month-to-month,Yes,Electronic check,75.0,600.0,Random,2024-03-18
+1,Female,True,True,True,True,Fiber optic,Yes,No,No,Yes,No,Yes,11,Month-to-month,Yes,Bank transfer (automatic),70.0,900.0,Gradient,No,2024-03-18
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Gradient,No,2024-03-18
+1,Female,True,True,True,True,Fiber optic,Yes,No,Yes,Yes,No,No,16,One year,Yes,Mailed check,50.0,800.0,Gradient,Yes,2024-03-18
+0,Male,True,True,True,True,Fiber optic,Yes,Yes,Yes,Yes,Yes,Yes,12,Month-to-month,Yes,Electronic check,60.0,600.0,Random,No,2024-03-18
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
+0,Female,True,True,True,True,Fiber optic,Yes,No,Yes,Yes,Yes,Yes,20,Two year,Yes,Credit card (automatic),100.0,2500.0,Random,No,2024-03-18
+1,Male,True,True,False,True,DSL,No,No,Yes,No,Yes,No,12,Month-to-month,No,Mailed check,60.0,700.0,Random,,2024-03-18
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
+0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
+1,Female,True,True,True,False,Fiber optic,No,Yes,No,Yes,Yes,Yes,7,One year,No,Mailed check,34.0,1600.0,Gradient,No,2024-03-18
