@@ -48,3 +48,4 @@ SeniorCitizen,gender,Partner,Dependents,PhoneService,MultipleLines,InternetServi
 0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
 0,Male,True,True,True,True,DSL,Yes,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Electronic check,15.0,15.0,Random,No,2024-03-18
 1,Female,True,True,True,False,Fiber optic,No,Yes,No,Yes,Yes,Yes,7,One year,No,Mailed check,34.0,1600.0,Gradient,No,2024-03-18
+1,Male,True,True,True,True,Fiber optic,No,Yes,Yes,Yes,Yes,Yes,0,Month-to-month,Yes,Credit card (automatic),80.0,1000.0,Gradient,2024-03-18
