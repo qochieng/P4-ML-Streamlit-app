@@ -42,6 +42,7 @@ def dash():
                     st.plotly_chart(fig)
 
 
+
                     data= df['tenure']
                     fig = px.histogram(df, x='tenure', color='tenure', color_discrete_sequence=['pink'])
                     fig.update_layout(title='Tenure Distribution',width=500, height=500)
@@ -92,6 +93,7 @@ def dash():
 
                 # Violin plots is a statistical representation of numerical data. It is similar to a box plot,
 
+
                 data = df['TotalCharges']
                 fig = px.violin(data, title='Total Charges Distribution',y="TotalCharges",width=500, height=500)
                 st.plotly_chart(fig)
@@ -115,7 +117,7 @@ def dash():
                 st.plotly_chart(fig)
 
 
-            with col2:
+       
                 def plot_payment_methods(df):
                         payment_counts = df['PaymentMethod'].value_counts().reset_index()
                         payment_counts.columns = ['PaymentMethod', 'count']
