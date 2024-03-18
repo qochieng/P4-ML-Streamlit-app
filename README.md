@@ -88,6 +88,11 @@ Predict page overview
 
 Quintor Ochieng'
 
+## Live Demo
+- Streamlit cloud: [Streamlit](https://p4-ml-app-app-g86sf6auecsamrdnbqmiyk.streamlit.app)
+- Render: [Render](https://p4-ml-streamlit-app.onrender.com)
+
+## Project Links
 - Github: [Github Profile](https://github.com/qochieng/P4-ML-Streamlit-app)
 - LinkedIn: [LinkedIn Profile](www.linkedin.com/in/quintor-ochieng)
 - Medium: [Medium Profile](https://medium.com/@qochieng88/streamlit-churn-prediction-app-042a190d2aa2)
